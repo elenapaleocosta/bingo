@@ -5,6 +5,7 @@ import { CardManagerModal } from './components/CardManagerModal';
 import { StickerGalleryModal } from './components/StickerGalleryModal';
 import { LevelUpModal } from './components/LevelUpModal';
 import { StatsModal } from './components/StatsModal';
+import { FirebaseTestModal } from './components/FirebaseTestModal';
 import { BingoTile, BingoDeck, PlayerStats, StickerManifest } from './types/bingo';
 import {
   getStoredPhrases,
@@ -29,6 +30,7 @@ export const App: React.FC = () => {
   const [isCardManagerOpen, setIsCardManagerOpen] = useState<boolean>(false);
   const [isStickerGalleryOpen, setIsStickerGalleryOpen] = useState<boolean>(false);
   const [isStatsOpen, setIsStatsOpen] = useState<boolean>(false);
+  const [isFirebaseTestOpen, setIsFirebaseTestOpen] = useState<boolean>(false);
   const [levelUpData, setLevelUpData] = useState<{ isOpen: boolean; level: number }>({ isOpen: false, level: 1 });
 
   // Sticker Manifest
@@ -174,6 +176,7 @@ export const App: React.FC = () => {
         onOpenCardManager={() => setIsCardManagerOpen(true)}
         onOpenStickerGallery={() => setIsStickerGalleryOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}
+        onOpenFirebaseTest={() => setIsFirebaseTestOpen(true)}
         onResetXP={handleResetXP}
         soundEnabled={soundEnabled}
         onToggleSound={() => {
@@ -260,6 +263,11 @@ export const App: React.FC = () => {
         onClose={() => setIsStatsOpen(false)}
         stats={stats}
         onResetXP={handleResetXP}
+      />
+
+      <FirebaseTestModal
+        isOpen={isFirebaseTestOpen}
+        onClose={() => setIsFirebaseTestOpen(false)}
       />
 
       <LevelUpModal

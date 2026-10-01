@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Layers, Image as ImageIcon, Award, Volume2, VolumeX, RotateCcw } from 'lucide-react';
+import { Sparkles, Layers, Image as ImageIcon, Award, Volume2, VolumeX, RotateCcw, Database } from 'lucide-react';
 import { PlayerStats } from '../types/bingo';
 import { getRequiredXP } from '../utils/storage';
 
@@ -8,6 +8,7 @@ interface NavbarProps {
   onOpenCardManager: () => void;
   onOpenStickerGallery: () => void;
   onOpenStats: () => void;
+  onOpenFirebaseTest: () => void;
   onResetXP: () => void;
   soundEnabled: boolean;
   onToggleSound: () => void;
@@ -18,6 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenCardManager,
   onOpenStickerGallery,
   onOpenStats,
+  onOpenFirebaseTest,
   onResetXP,
   soundEnabled,
   onToggleSound
@@ -79,6 +81,15 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Action Buttons */}
         <div className="flex items-center gap-1.5">
+          <button
+            onClick={onOpenFirebaseTest}
+            className="flex items-center gap-1 px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-xl text-xs font-semibold transition active:scale-95"
+            title="Test Firebase Firestore Connection"
+          >
+            <Database className="w-4 h-4 text-amber-600" />
+            <span className="hidden lg:inline">Firebase</span>
+          </button>
+
           <button
             onClick={() => {
               if (window.confirm('Reset your XP count and Level back to 0?')) {
