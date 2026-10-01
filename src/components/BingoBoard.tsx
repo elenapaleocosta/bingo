@@ -18,10 +18,18 @@ export const BingoBoard: React.FC<BingoBoardProps> = ({
   onClaimBingo,
   onNewGame
 }) => {
-  // Dynamically compute grid dimensions according to the number of phrases/cards in the deck
   const phraseCount = currentDeck.phrases.length;
-  const gridCols = Math.max(3, Math.ceil(Math.sqrt(phraseCount + 1)));
+  const totalTilesNeeded = phraseCount + 1; // 1 tile per phrase + 1 FREE space
   
+  // Calculate grid columns so layout automatically adapts when cards are added (3, 4, or 5 columns)
+  const gridCols = totalTilesNeeded <= 9 
+    ? 3 
+    : totalTilesNeeded <= 15 
+    ? 3 
+    : totalTilesNeeded === 16 
+    ? 4 
+    : Math.min(5, Math.ceil(Math.sqrt(totalTilesNeeded)));
+
   const [tiles, setTiles] = useState<BingoTile[]>([]);
   const [claimedBingoThisBoard, setClaimedBingoThisBoard] = useState(false);
 
@@ -31,7 +39,6 @@ export const BingoBoard: React.FC<BingoBoardProps> = ({
   }, [currentDeck]);
 
   const generateBoard = () => {
-    const totalTiles = gridCols * gridCols;
     const phrases = [...currentDeck.phrases];
     
     // Shuffle phrases
@@ -41,37 +48,27 @@ export const BingoBoard: React.FC<BingoBoardProps> = ({
     }
 
     const newTiles: BingoTile[] = [];
-    const centerIdx = Math.floor(totalTiles / 2);
+    const centerIdx = Math.floor(phrases.length / 2);
 
-    let phraseIdx = 0;
-    for (let r = 0; r < gridCols; r++) {
-      for (let c = 0; c < gridCols; c++) {
-        const idx = r * gridCols + c;
-        const isCenter = idx === centerIdx;
-
-        if (isCenter) {
-          newTiles.push({
-            id: `tile-${r}-${c}`,
-            phrase: 'FREE SPACE',
-            isMarked: true,
-            isFreeSpace: true,
-            row: r,
-            col: c
-          });
-        } else {
-          const p = phrases[phraseIdx % phrases.length] || `Phrase ${phraseIdx + 1}`;
-          phraseIdx++;
-
-          newTiles.push({
-            id: `tile-${r}-${c}`,
-            phrase: p,
-            isMarked: false,
-            isFreeSpace: false,
-            row: r,
-            col: c
-          });
-        }
+    for (let i = 0; i < phrases.length; i++) {
+      if (i === centerIdx) {
+        newTiles.push({
+          id: `tile-free-${Date.now()}`,
+          phrase: 'FREE SPACE',
+          isMarked: true,
+          isFreeSpace: true,
+          row: 0,
+          col: 0
+        });
       }
+      newTiles.push({
+        id: `tile-${i}-${phrases[i]}`,
+        phrase: phrases[i],
+        isMarked: false,
+        isFreeSpace: false,
+        row: 0,
+        col: 0
+      });
     }
 
     setTiles(newTiles);
@@ -144,7 +141,7 @@ export const BingoBoard: React.FC<BingoBoardProps> = ({
         </div>
       </div>
 
-      {/* Main Bingo Grid - Dynamically layout according to phrase count */}
+      {/* Main Bingo Grid - Dynamic layout adapting to card count, zero doubles */}
       <div 
         className="w-full grid gap-2 sm:gap-3 p-2.5 sm:p-4 bg-white rounded-3xl border-2 border-pastel-border shadow-lg relative"
         style={{
