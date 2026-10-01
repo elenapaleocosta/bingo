@@ -1,14 +1,15 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, addDoc, getDoc, doc, serverTimestamp } from 'firebase/firestore';
 
+// Reads strictly from environment variables (.env.local) to prevent API key leaks in source code
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyCaCMijF7b7kRy56WuVOeV6vRjjOafgZyI",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "amaliasbingo.firebaseapp.com",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "amaliasbingo",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "amaliasbingo.firebasestorage.app",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "311743202591",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:311743202591:web:2f79c863e424f2dba05c2a",
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-Y7CC0K42EP"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "",
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || ""
 };
 
 // Initialize Firebase App
